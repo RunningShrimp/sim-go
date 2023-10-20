@@ -14,7 +14,7 @@ func fastGetHandler(path, httpMethod string) *handlerMethod {
 	return nil
 }
 
-func putNode(route *routes) {
+func putNode(route *route) {
 	if _, ok := adaptiveHashRequestMap[route.method][route.path]; !ok && *route.reqCount >= reqNum {
 		adaptiveHashRequestMap[route.method][route.path] = route.handler
 	}
