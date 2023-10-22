@@ -1,70 +1,44 @@
 package route
 
 import (
-	"reflect"
+	"github.com/stretchr/testify/assert"
+	"net/http"
 	"testing"
 )
 
-func Test_node_insert(t *testing.T) {
-	type fields struct {
-		component string
-		wildChild bool
-		children  []*node
-		route     *routes
-	}
-	type args struct {
-		components []string
-		route      *routes
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		args   args
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			n := &node{
-				component: tt.fields.component,
-				wildChild: tt.fields.wildChild,
-				children:  tt.fields.children,
-				routes:    tt.fields.route,
-			}
-			n.insert(tt.args.components, tt.args.route)
-		})
-	}
-}
+func TestInsert(t *testing.T) {
+	routeTree := NewRadixTree()
 
-func Test_node_search(t *testing.T) {
-	type fields struct {
-		component string
-		wildChild bool
-		children  []*node
-		route     *routes
-	}
-	type args struct {
-		components []string
-	}
-	tests := []struct {
-		name   string
-		fields fields
-		args   args
-		want   *routes
-	}{
-		// TODO: Add test cases.
-	}
-	for _, tt := range tests {
-		t.Run(tt.name, func(t *testing.T) {
-			n := &node{
-				component: tt.fields.component,
-				wildChild: tt.fields.wildChild,
-				children:  tt.fields.children,
-				routes:    tt.fields.route,
-			}
-			if got := n.search(tt.args.components); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("search() = %v, want %v", got, tt.want)
-			}
-		})
-	}
+	routeTree.insert("/user", http.MethodGet, nil)
+	routeTree.insert("/user", http.MethodPost, &route{})
+	routeTree.insert("/us/er", http.MethodGet, &route{})
+	r, _ := routeTree.search("/us/er", http.MethodGet)
+	assert.NotNil(t, r)
+	r, _ = routeTree.search("/user", http.MethodPost)
+	assert.NotNil(t, r)
+	r, _ = routeTree.search("/user", http.MethodGet)
+	assert.Nil(t, r)
+	//routeTree.insert("/user/:id", http.MethodGet, &route{})
+	//r, _ = routeTree.search("/user/1", http.MethodGet)
+	//assert.NotNil(t, r)
+	//if assert.NotNil(t, paramValue) {
+	//	assert.Equal(t, paramValue["id"], "1")
+	//}
+	//routeTree.insert("/user/:id", http.MethodPost, nil)
+	//r, paramValue = routeTree.search("/user/1", http.MethodPost)
+	//assert.NotNil(t, r)
+	//if assert.NotNil(t, paramValue) {
+	//	assert.Equal(t, paramValue["id"], "1")
+	//}
+	routeTree.insert("/user/:ids/:name", http.MethodGet, &route{})
+	r, _ = routeTree.search("/user/1/test", http.MethodGet)
+	assert.NotNil(t, r)
+	//assert.NotNil(t, r)
+	//if assert.NotNil(t, paramValue) {
+	//	assert.Equal(t, paramValue["id"], "1")
+	//	assert.Equal(t, paramValue["name"], "test")
+	//}
+	//r, paramValue = routeTree.search("/user/1/test/test", http.MethodGet)
+	//assert.Nil(t, r)
+
 }
