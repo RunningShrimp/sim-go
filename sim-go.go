@@ -22,8 +22,6 @@ type Server struct {
 
 	timeOut time.Duration
 	maxConn int64
-
-	route server.RouteObject
 }
 
 func (g Server) Run() {
