@@ -11,7 +11,7 @@ import (
 type handlerFunc struct {
 	In    []*reflect.Type // 入参列表,按照
 	Out   []*reflect.Type // 出参列表
-	value reflect.Value   // 处理方法
+	HFunc reflect.Value   // 处理方法
 }
 
 type node struct {

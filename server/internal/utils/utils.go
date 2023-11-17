@@ -1,3 +1,7 @@
 package utils
 
-func ValConvertRealType() {}
+import "reflect"
+
+func ValConvertRealType[T reflect.Kind | reflect.Value](val T) {
+
+}

@@ -57,12 +57,12 @@ func (s *SimHTTPServer) dispatchRequest(writer http.ResponseWriter, request *htt
 	// 3. 获取请求参数
 	argValues := make([]reflect.Value, 0)
 	// 4. 将请求参数注入到handler参数中
-	for _, e := range egFunc.InParameter {
+	for _, e := range handler.In {
 		fmt.Println(*e)
 		argValues = append(argValues, s.dataMapStruct(data, *e))
 	}
 	// 5. 执行handler
-	resultArr := egFunc.HFunc.Call(argValues)
+	resultArr := handler.HFunc.Call(argValues)
 	// 6. 获取handler执行结果，返回response
 	// for _, v := range resultArr {
 	//	// TODO.md: 检查error
